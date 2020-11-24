@@ -55,6 +55,7 @@ public class MongoManager {
 						.append("codigoVenta", datosComprador[3]));
 		Document auxSet = new Document("$push", cambios);
 		coleccionVuelos.updateOne(vueloAMod, auxSet);
+		restarPlaza(datosComprador[0]);
 	}
 
 	public int getPlaza(String codigoVuelo) {
@@ -66,7 +67,23 @@ public class MongoManager {
 		MongoCursor cursor = fi.cursor();
 		Document doc = (Document) cursor.next();
 		ArrayList<Document> vendidos = new ArrayList<Document>();
-		vendidos.addAll((ArrayList<Document>) doc.get("vendidos"));
+		try {
+			vendidos.addAll((ArrayList<Document>) doc.get("vendidos"));
+		} catch (Exception e) {
+			return 0;
+		}
 		return vendidos.size();
+	}
+
+	public void restarPlaza(String codigoVuelo) {
+		MongoCollection coleccionVuelos = db.getCollection("vuelos_compra");
+		Document vueloAMod = new Document("codigo", codigoVuelo);
+		FindIterable<Document> fi = coleccionVuelos.find(vueloAMod);
+		Document docAux = fi.first();
+		int numPlazas = docAux.getInteger("plazas_disponibles");
+		System.out.println(numPlazas);
+		Document cambios = new Document("plazas_disponibles", numPlazas - 1);
+		Document auxSet = new Document("$set", cambios);
+		coleccionVuelos.updateOne(vueloAMod, auxSet);
 	}
 }

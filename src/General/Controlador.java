@@ -44,6 +44,7 @@ public class Controlador {
 		sc.nextLine();
 		datosComprador[2] = sc.nextLine();
 		datosComprador[3] = miModelo.generarCodigoVenta();
+		System.out.println("Su codigo de venta es: " + datosComprador[3]);
 		for (int i = 0; i < num; i++) {
 			String datosAsiento[] = new String[4];
 			System.out.println("Introduce los datos del pasajero:  \nDNI: ");
