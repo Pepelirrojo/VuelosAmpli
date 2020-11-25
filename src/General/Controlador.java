@@ -28,6 +28,12 @@ public class Controlador {
 		misPantallas.get(destino).setVisible(true);
 	}
 
+	public void vuelosComprador() {
+		System.out.println("Introduce el dni del pagador: ");
+		String dni = sc.next();
+		miModelo.mostrarVuelosComprador(dni);
+	}
+
 	public void comprarVuelo() {
 		for (Entry<Integer, Vuelo> vuelo : miModelo.verTodo().entrySet()) {
 			System.out.println(vuelo.getValue());

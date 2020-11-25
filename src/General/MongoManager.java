@@ -2,6 +2,7 @@ package General;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bson.Document;
 
@@ -44,6 +45,31 @@ public class MongoManager {
 		return misVuelos;
 	}
 
+	public void vuelosComprados(String dni) {
+		MongoCollection coleccionVuelos = db.getCollection("vuelos_compra");
+		List<Document> vuelo = (List<Document>) coleccionVuelos.find().into(new ArrayList<Document>());
+
+		for (Document vuelos : vuelo) {
+
+			List<Document> vendidos = (List<Document>) vuelos.get("vendidos");
+
+			try {
+
+				for (Document vuelosVendidos : vendidos) {
+					if (vuelosVendidos.getString("dniPagador").equals(dni)) {
+						System.out.println("Vuelo: " + vuelos.get("codigo") + " " + vuelosVendidos.toString());
+					}
+
+				}
+
+			} catch (Exception e) {
+
+			}
+
+		}
+
+	}
+
 	public void comprar(String[] datosComprador, String[] datosAsiento) {
 		MongoCollection coleccionVuelos = db.getCollection("vuelos_compra");
 		int numAsiento = Integer.parseInt(datosAsiento[3]);
@@ -81,9 +107,9 @@ public class MongoManager {
 		FindIterable<Document> fi = coleccionVuelos.find(vueloAMod);
 		Document docAux = fi.first();
 		int numPlazas = docAux.getInteger("plazas_disponibles");
-		System.out.println(numPlazas);
 		Document cambios = new Document("plazas_disponibles", numPlazas - 1);
 		Document auxSet = new Document("$set", cambios);
 		coleccionVuelos.updateOne(vueloAMod, auxSet);
 	}
+
 }

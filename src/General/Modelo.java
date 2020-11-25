@@ -19,6 +19,10 @@ public class Modelo {
 	public void comprar(String[] datosComprador, String[] datosAsiento) {
 		miManager.comprar(datosComprador, datosAsiento);
 	}
+	
+	public void mostrarVuelosComprador(String dni) {
+		miManager.vuelosComprados(dni);
+	}
 
 	public String generarCodigoVenta() {
 		String codigoVenta = "";

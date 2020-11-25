@@ -32,6 +32,18 @@ public class Menu extends JFrame {
 			}
 		});
 
+		JButton btnComprados = new JButton("Mostrar comprados");
+		btnComprados.setFont(new Font("Tahoma", Font.PLAIN, 8));
+		btnComprados.setBounds(142, 5, 153, 59);
+		getContentPane().add(btnComprados);
+		btnComprados.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				miControlador.vuelosComprador();
+			}
+		});
+		
+		
 		JButton btnCancelar = new JButton("Cancelar Vuelo");
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 8));
 		btnCancelar.setBounds(223, 71, 101, 59);
