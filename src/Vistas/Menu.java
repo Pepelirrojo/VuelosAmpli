@@ -51,7 +51,7 @@ public class Menu extends JFrame {
 		btnCancelar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				miControlador.changeWindow("menu", "cancela");
+				miControlador.cancelar();
 			}
 		});
 

@@ -82,6 +82,7 @@ public class MongoManager {
 		Document auxSet = new Document("$push", cambios);
 		coleccionVuelos.updateOne(vueloAMod, auxSet);
 		restarPlaza(datosComprador[0]);
+		System.out.println("Se ha comprado correctamente");
 	}
 
 	public int getPlaza(String codigoVuelo) {
@@ -110,6 +111,39 @@ public class MongoManager {
 		Document cambios = new Document("plazas_disponibles", numPlazas - 1);
 		Document auxSet = new Document("$set", cambios);
 		coleccionVuelos.updateOne(vueloAMod, auxSet);
+	}
+
+	public void cancelarVuelo(String codigoVenta, String dni, String codigoVuelo) {
+
+		MongoCollection coleccionVuelos = db.getCollection("vuelos_compra");
+		List<Document> vuelo = (List<Document>) coleccionVuelos.find().into(new ArrayList<Document>());
+
+		for (Document vuelos : vuelo) {
+			if (vuelos.getString("codigo").equals(codigoVuelo)) {
+
+				List<Document> vendidos = (List<Document>) vuelos.get("vendidos");
+				try {
+
+					for (Document vuelosVendidos : vendidos) {
+						if (vuelosVendidos.getString("dni").equals(dni)) {
+							Document filter = new Document();
+							Document update = new Document("$pull",
+									new Document("vendidos", new Document("codigoVenta", codigoVenta)));
+
+							coleccionVuelos.updateOne(filter, update);
+						}
+
+					}
+
+				} catch (Exception e) {
+
+				}
+
+			}
+
+		}
+		System.out.println("Se ha borrado correctamente");
+
 	}
 
 }

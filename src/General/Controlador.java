@@ -33,6 +33,16 @@ public class Controlador {
 		String dni = sc.next();
 		miModelo.mostrarVuelosComprador(dni);
 	}
+	
+	public void cancelar() {
+		System.out.println("Introduce el dni: ");
+		String dni = sc.next();
+		System.out.println("Introduce el codigo del vuelo: ");
+		String codigoVuelo = sc.next();
+		System.out.println("Introduce el codigo de la venta: ");
+		String codigoVenta = sc.next();
+		miModelo.cancelar(codigoVenta, dni, codigoVuelo);
+	}
 
 	public void comprarVuelo() {
 		for (Entry<Integer, Vuelo> vuelo : miModelo.verTodo().entrySet()) {

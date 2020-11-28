@@ -23,6 +23,10 @@ public class Modelo {
 	public void mostrarVuelosComprador(String dni) {
 		miManager.vuelosComprados(dni);
 	}
+	
+	public void cancelar(String codigoVenta, String dni, String codigoVuelo) {
+		miManager.cancelarVuelo(codigoVenta, dni, codigoVuelo  );
+	}
 
 	public String generarCodigoVenta() {
 		String codigoVenta = "";
