@@ -125,12 +125,13 @@ public class MongoManager {
 				try {
 
 					for (Document vuelosVendidos : vendidos) {
-						if (vuelosVendidos.getString("dni").equals(dni)) {
+						if (vuelosVendidos.getString("dni").equals(dni)
+								&& vuelosVendidos.getString("codigoVenta").equals(codigoVenta)) {
 							Document filter = new Document();
-							Document update = new Document("$pull",
-									new Document("vendidos", new Document("codigoVenta", codigoVenta)));
+							Document update = new Document("$pull", new Document("vendidos", new Document("dni", dni)));
 
 							coleccionVuelos.updateOne(filter, update);
+							sumarPlaza(codigoVuelo);
 						}
 
 					}
@@ -144,6 +145,17 @@ public class MongoManager {
 		}
 		System.out.println("Se ha borrado correctamente");
 
+	}
+
+	public void sumarPlaza(String codigoVuelo) {
+		MongoCollection coleccionVuelos = db.getCollection("vuelos_compra");
+		Document vueloAMod = new Document("codigo", codigoVuelo);
+		FindIterable<Document> fi = coleccionVuelos.find(vueloAMod);
+		Document docAux = fi.first();
+		int numPlazas = docAux.getInteger("plazas_disponibles");
+		Document cambios = new Document("plazas_disponibles", numPlazas + 1);
+		Document auxSet = new Document("$set", cambios);
+		coleccionVuelos.updateOne(vueloAMod, auxSet);
 	}
 
 }
